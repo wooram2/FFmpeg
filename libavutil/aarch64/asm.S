@@ -229,6 +229,32 @@ ELF     .size   \name, . - \name
 #endif
 .endm
 
+
+
+/*
+ * 수정된 코드
+ */
+.macro  movrelx rd, val, offset=0
+#if CONFIG_PIC
+#if defined(__APPLE__)
+        adrp            \rd, \val@GOTPAGE
+        ldr             \rd, [\rd, \val@GOTPAGEOFF]
+#else
+        adrp            \rd, :got:\val
+        ldr             \rd, [\rd, :got_lo12:\val]
+#endif
+    .if \offset > 0
+        add             \rd, \rd, \offset
+    .elseif \offset < 0
+        sub             \rd, \rd, -(\offset)
+    .endif
+#else
+        ldr             \rd, =\val+\offset
+#endif
+.endm
+
+
+
 #define GLUE(a, b) a ## b
 #define JOIN(a, b) GLUE(a, b)
 #define X(s) JOIN(EXTERN_ASM, s)

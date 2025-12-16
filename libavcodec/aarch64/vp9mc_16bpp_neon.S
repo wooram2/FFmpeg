@@ -287,7 +287,7 @@ do_8tap_h_size 16
 .macro do_8tap_h_func type, filter, offset, size, bpp
 function ff_vp9_\type\()_\filter\()\size\()_h_\bpp\()_neon, export=1
         mvni            v31.8h, #((0xff << (\bpp - 8)) & 0xff), lsl #8
-        movrel          x6,  X(ff_vp9_subpel_filters), 256*\offset
+        movrelx         x6,  X(ff_vp9_subpel_filters), 256*\offset
         cmp             w5,  #8
         add             x9,  x6,  w5, uxtw #4
         mov             x5,  #2*\size
@@ -574,7 +574,7 @@ do_8tap_4v avg
 function ff_vp9_\type\()_\filter\()\size\()_v_\bpp\()_neon, export=1
         uxtw            x4,  w4
         mvni            v1.8h, #((0xff << (\bpp - 8)) & 0xff), lsl #8
-        movrel          x5,  X(ff_vp9_subpel_filters), 256*\offset
+        movrelx         x5,  X(ff_vp9_subpel_filters), 256*\offset
         add             x6,  x5,  w6, uxtw #4
         mov             x5,  #\size
 .if \size >= 8

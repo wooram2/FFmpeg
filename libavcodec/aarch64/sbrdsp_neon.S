@@ -273,7 +273,7 @@ endfunc
 .macro apply_noise_common
         sxtw            x3, w3
         sxtw            x5, w5
-        movrel          x7, X(ff_sbr_noise_table)
+        movrelx         x7, X(ff_sbr_noise_table)
         add             x3, x3, #1
 1:      and             x3, x3, #0x1ff
         add             x8, x7, x3, lsl #3
