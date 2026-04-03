@@ -217,6 +217,16 @@ void avpriv_request_sample(void *avc,
 #define SUINT32 uint32_t
 #endif
 
+#if (AV_GCC_VERSION_AT_LEAST(4,0) || defined(__clang__)) && (defined(__ELF__) || defined(__MACH__))
+#    define attribute_visibility_hidden __attribute__((visibility("hidden")))
+#    define FF_VISIBILITY_PUSH_HIDDEN   _Pragma("GCC visibility push(hidden)")
+#    define FF_VISIBILITY_POP_HIDDEN    _Pragma("GCC visibility pop")
+#else
+#    define attribute_visibility_hidden
+#    define FF_VISIBILITY_PUSH_HIDDEN
+#    define FF_VISIBILITY_POP_HIDDEN
+#endif
+
 /**
  * Clip and convert a double value into the long long amin-amax range.
  * This function is needed because conversion of floating point to integers when

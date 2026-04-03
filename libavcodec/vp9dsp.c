@@ -29,7 +29,7 @@
 
 #include "vp9dsp.h"
 
-const DECLARE_ALIGNED(16, int16_t, ff_vp9_subpel_filters)[3][16][8] = {
+const attribute_visibility_hidden DECLARE_ALIGNED(16, int16_t, ff_vp9_subpel_filters)[3][16][8] = {
     [FILTER_8TAP_REGULAR] = {
         {  0,  0,   0, 128,   0,   0,  0,  0 },
         {  0,  1,  -5, 126,   8,  -3,  1,  0 },
