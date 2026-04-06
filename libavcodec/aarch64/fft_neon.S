@@ -353,7 +353,7 @@ function fft\n\()_neon, align=6
         sub             x0,  x28, #\n4*2*8
         ldp             x28, x30, [sp], #16
         AARCH64_VALIDATE_LINK_REGISTER
-        movrel          x4,  X(ff_cos_\n)
+        movrelx         x4,  X(ff_cos_\n)
         mov             x2,  #\n4>>1
         b               fft_pass_neon
 endfunc
@@ -384,7 +384,7 @@ function ff_fft_calc_neon, export=1
         movrel          x12, pmmp
         ldr             x3,  [x3, x2, lsl #3]
         movrel          x13, mppm
-        movrel          x14, X(ff_cos_16)
+        movrelx          x14, X(ff_cos_16)
         ld1             {v31.16b}, [x11]
         mov             x0,  x1
         ld1             {v29.4s},  [x12]         // pmmp

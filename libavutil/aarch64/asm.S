@@ -229,6 +229,30 @@ ELF     .size   \name, . - \name
 #endif
 .endm
 
+
+.macro  movrelx rd, val, offset=0
+#if CONFIG_PIC && defined(__APPLE__)
+        adrp            \rd, \val@GOTPAGE
+        ldr             \rd, [\rd, \val@GOTPAGEOFF]
+    .if \offset > 0
+        add             \rd, \rd, \offset
+    .elseif \offset < 0
+        sub             \rd, \rd, -(\offset)
+    .endif
+#elif CONFIG_PIC
+        adrp            \rd, :got:\val
+        ldr             \rd, [\rd, :got_lo12:\val]
+    .if \offset > 0
+        add             \rd, \rd, \offset
+    .elseif \offset < 0
+        sub             \rd, \rd, -(\offset)
+    .endif
+#else
+        ldr             \rd, =\val+\offset
+#endif
+.endm
+
+
 #define GLUE(a, b) a ## b
 #define JOIN(a, b) GLUE(a, b)
 #define X(s) JOIN(EXTERN_ASM, s)
